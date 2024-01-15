@@ -24,3 +24,13 @@
 - [ ] Реализация авторизации
 
 # Что читал для реализации
+
+> [XMLHttpRequest](https://learn.javascript.ru/xmlhttprequest)
+
+> [Что такое сокращение ссылок](https://proglib.io/p/a-mozhno-pokoroche-kak-rabotayut-sokrashchateli-ssylok-2020-02-24)
+
+> [Полезно (Задача собеседования)](https://habr.com/ru/articles/746602/)
+
+> [Алгоритм](https://stackoverflow.com/questions/742013/how-do-i-create-a-url-shortener)
+
+> [Object URL JavaScript](https://learn.javascript.ru/url)
