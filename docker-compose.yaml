@@ -1,0 +1,17 @@
+---
+# Сервис для базы данных PostgreSQL
+# Конфиг к БД лежит в ./Docker/env/pgsql.env
+# Описание запуска описал в Readme.md
+
+version: '3.3'
+
+services:
+  postgresql_service:
+    image: postgres:15.4
+    env_file:
+      - ./Docker/env/pgsql.env
+    ports:
+      - "54331:5432"
+    volumes:
+      - ./Docker/pgsql:/var/lib/postgresql/data
+    restart: unless-stopped
