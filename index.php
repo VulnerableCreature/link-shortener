@@ -75,27 +75,34 @@ use App\Http\Service\LinkShortener;
             <input type="text" name="url" id="uniqueUrl">
             <button type="button" onClick="generateUrl();">Сократить ссылку</button>
         </form>
-        <div class="result" id="shortUrlResult"></div>
+        <div class="result" id="urlResult"></div>
     </div>
     <script>
     function generateUrl() {
         const url = document.getElementById('uniqueUrl').value;
-        const message = document.getElementById('shortUrlResult');
+        const message = document.getElementById('urlResult');
+
 
         if (url == '') {
             console.log("Input is Empty");
             message.innerText = 'Введите адрес';
             return;
         }
+
         console.log(url);
 
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'app/Http/Handlers/Ajax_handler.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                const response = JSON.parse(xhr.responseText);
-                document.getElementById('shortUrlResult').innerText = 'Short URL: ' + response.url;
+            try {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log(xhr.responseText);
+                    const response = JSON.parse(xhr.responseText);
+                    message.innerText = 'Короткая ссылка: ' + response.url;
+                }
+            } catch (err) {
+                console.log(err);
             }
         };
 

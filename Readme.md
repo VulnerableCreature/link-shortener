@@ -100,7 +100,7 @@ xhr.setRequestHeader('Content-Type', 'application/json');
 xhr.onreadystatechange = function() {
 if (xhr.readyState === 4 && xhr.status === 200) {
     const response = JSON.parse(xhr.responseText);
-    document.getElementById('shortUrlResult').innerText = 'Short URL: ' + response.url;
+    document.getElementById('shortUrlResult').innerText = 'Короткая ссылка: ' + response.url;
 }
 };
 xhr.send('url=' + encodeURIComponent(url));
@@ -123,3 +123,89 @@ echo json_encode(['url' => 'Answer']);
 Про данную функцию прочитал тут: [Link](https://www.geeksforgeeks.org/how-to-encode-and-decode-a-url-in-javascript/)
 
 Далее проверяю состояние запроса: если состояние === 4(запрос завершен) и сетевой статус === 200 получаю данные с сервера и вывожу на страницу новую сгенированную ссылку.
+
+3. Описываю Handler
+
+Написал вот такую реализацию
+
+```bash
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $url = $_POST['url'];
+
+    $linkShortener = new LinkShortener($url);
+    $newUrl = $linkShortener->generateUrl();
+
+    echo json_encode(['url' => 'asd']);
+}
+```
+
+Но с ней получаю ошибку
+
+```bash
+VM669:1 Uncaught SyntaxError: Unexpected token '<', "<br />
+<b>"... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at xhr.onreadystatechange ((индекс):87:39)
+xhr.onreadystatechange	@	(индекс):87
+Объект XMLHttpRequest.send (асинхронный)
+generateUrl	@	(индекс):92
+onclick
+```
+
+> Описание проблемы: при отправке формы на сервер(обработчик) возникает данная ошибка (Пока непонятно по чему)
+
+> Решение проблемы: ошибка заключался в том, что я отправлял данные в формате `json` - это было указано в HTTP-заголовке `xhr.setRequestHeader('Content-Type', 'application/json');`, но мы то отправляем форму на сервер, а оттуда получаем данные в формате `json`. Поэтому необходимо заменить в заголовке `application/json` на `x-www-form-urlencoded`
+
+Информацию вычитал здесь: [Link](https://zdrons.ru/veb-programmirovanie/application-x-www-form-urlencoded-php-osobennosti-i-primery-ispolzovaniya/)
+
+В результате получаем следующее
+
+```bash
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $url = $_POST['url'];
+
+    // $linkShortener = new LinkShortener($url);
+    // $newUrl = $linkShortener->generateUrl();
+
+    echo json_encode(['url' => 'asd']);
+}
+```
+
+```bash
+Короткая ссылка: asd
+```
+
+После возвращения кода для генерации коротких ссылок, ошибка вновь вернулась она была связана с тем, что в `Ajax-handler` он не понимал, что за класс `LinkShortener`, выяснил это путем печати лога в консоль
+`console.log(xhr.responseText);`
+
+> Печать лога в консоль по которому стала ясна проблема.
+
+```bash
+<br />
+<b>Fatal error</b>:  Uncaught Error: Class &quot;App\Http\Service\LinkShortener&quot; not found in C:\!Projects\link-shortener\app\Http\Handlers\Ajax_handler.php:11
+Stack trace:
+#0 {main}
+  thrown in <b>C:\!Projects\link-shortener\app\Http\Handlers\Ajax_handler.php</b> on line <b>11</b><br />
+```
+
+Для решения добавляем эту строчку `require_once('../../../vendor/autoload.php');` в `Ajax-handler` и всё работает.
+
+```bash
+Короткая ссылка: 123123R9EaTi
+```
+
+Попробовал сократить ссылку и получил вот такой результат:
+
+> исходная ссылка
+
+```bash
+https://learn.javascript.ru/xmlhttprequest#sostoyaniya-zaprosa
+```
+
+> результат
+
+```bash
+Короткая ссылка: https://learn.javascript.ru/xmlhttprequest#sostoyaniya-zaprosaJ5p6gC
+```
+
+> !!!В результате ссылка не сократилась, а стала больше. (Не тот результат, который должен быть)
