@@ -20,6 +20,8 @@
 - [x] Обработчик запроса (Ajax)
 - [x] Отображение короткой ссылки
 - [x] Посетитель может скопировать
+- [x] База данных
+- [x] Вывод коротких ссылок и переход по ним
 
 # Что читал для реализации
 
@@ -30,8 +32,6 @@
 > [Полезно (Задача собеседования)](https://habr.com/ru/articles/746602/)
 
 > [Алгоритм](https://stackoverflow.com/questions/742013/how-do-i-create-a-url-shortener)
-
-> [Object URL JavaScript](https://learn.javascript.ru/url)
 
 # Реализация
 
