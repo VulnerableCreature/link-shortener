@@ -1,9 +1,3 @@
-<?php
-require_once('vendor/autoload.php');
-
-use App\Http\Service\LinkShortener;
-
-?>
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -58,57 +52,27 @@ use App\Http\Service\LinkShortener;
         font-style: normal;
         font-weight: 700;
         letter-spacing: 1.4px;
-        text-decoration: underline;
         color: red;
+    }
+
+    .hide {
+        display: none;
     }
     </style>
 </head>
 
 <body>
-    <?php
-	$shortener = new LinkShortener('fkwfjkwe');
-	$random = $shortener->generateUrl();
-	echo $random;
-	?>
     <div class="form-request">
         <form id="UrlForm">
             <input type="text" name="url" id="uniqueUrl">
             <button type="button" onClick="generateUrl();">Сократить ссылку</button>
         </form>
         <div class="result" id="urlResult"></div>
+		<button id="btn_copy" class="hide" onClick="copyToClickBoard();">Скопировать</button>
+		<div id="copyMessage" style="margin-top: 10px;"></div>
     </div>
-    <script>
-    function generateUrl() {
-        const url = document.getElementById('uniqueUrl').value;
-        const message = document.getElementById('urlResult');
-
-
-        if (url == '') {
-            console.log("Input is Empty");
-            message.innerText = 'Введите адрес';
-            return;
-        }
-
-        console.log(url);
-
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'app/Http/Handlers/Ajax_handler.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onreadystatechange = function() {
-            try {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    console.log(xhr.responseText);
-                    const response = JSON.parse(xhr.responseText);
-                    message.innerText = 'Короткая ссылка: ' + response.url;
-                }
-            } catch (err) {
-                console.log(err);
-            }
-        };
-
-        xhr.send('url=' + encodeURIComponent(url));
-    }
-    </script>
+    <script src="js/copy.js"></script>
+    <script src="js/generateUrl.js"></script>
 </body>
 
 </html>

@@ -7,6 +7,7 @@ namespace App\Http\Service;
 class LinkShortener
 {
 	private string $originalUrl;
+	private const BASE_URL = 'http://127.0.0.1:8000/';
 
 	public function __construct(string $url)
 	{
@@ -21,7 +22,7 @@ class LinkShortener
 	public function generateUrl(): string
 	{
 		$shortUrl = $this->generateRandomString();
-		$shortUrl = $this->originalUrl . $shortUrl;
+		$shortUrl = self::BASE_URL . $shortUrl;
 
 		return $shortUrl;
 	}
