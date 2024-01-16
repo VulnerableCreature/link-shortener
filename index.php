@@ -64,12 +64,21 @@
             <input type="text" name="url" id="uniqueUrl">
             <button type="button" onClick="generateUrl();">Сократить ссылку</button>
         </form>
-        <div class="result" id="shortUrlResult">123</div>
+        <div class="result" id="shortUrlResult"></div>
     </div>
     <script>
     function generateUrl() {
         const url = document.getElementById('uniqueUrl').value;
+        const message = document.getElementById('shortUrlResult');
+
+        if (url == '') {
+            console.log("Input is Empty");
+            message.innerText = 'Введите адрес';
+            return;
+        }
         console.log(url);
+
+        message.innerText = 'Ваш короткий адрес: ' + url;
     }
     </script>
 </body>
