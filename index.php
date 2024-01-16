@@ -63,9 +63,9 @@
 
 <body>
     <div class="form-request">
-        <form id="UrlForm">
+        <form id="urlForm">
             <input type="text" name="url" id="uniqueUrl">
-            <button type="button" onClick="generateUrl();">Сократить ссылку</button>
+            <button type="submit" onClick="generateUrl();">Сократить ссылку</button>
         </form>
         <div class="result" id="urlResult"></div>
 		<button id="btn_copy" class="hide" onClick="copyToClickBoard();">Скопировать</button>
@@ -73,6 +73,11 @@
     </div>
     <script src="js/copy.js"></script>
     <script src="js/generateUrl.js"></script>
+    <script>
+        var form = document.getElementById("urlForm");
+        function handleForm(event) { event.preventDefault(); } 
+        form.addEventListener('submit', handleForm);
+    </script>
 </body>
 
 </html>
