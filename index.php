@@ -1,3 +1,9 @@
+<?php
+require_once('vendor/autoload.php');
+
+use App\Http\Service\LinkShortener;
+
+?>
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -59,6 +65,11 @@
 </head>
 
 <body>
+    <?php
+	$shortener = new LinkShortener('fkwfjkwe');
+	$random = $shortener->generateRandomString();
+	echo $random;
+	?>
     <div class="form-request">
         <form id="UrlForm">
             <input type="text" name="url" id="uniqueUrl">
