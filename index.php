@@ -1,11 +1,3 @@
-<?php
-require_once('vendor/autoload.php');
-
-use App\Http\Models\Url;
-
-$url = new Url();
-$urls = $url->selectUrls();
-?>
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -98,11 +90,9 @@ $urls = $url->selectUrls();
         <div class="result" id="urlResult"></div>
         <button id="btn_copy" class="hide" onClick="copyToClickBoard();">Скопировать</button>
         <div id="copyMessage" style="margin-top: 10px;"></div>
-        <div class="lists" id="lists">
-            <ul>
-                <?php foreach ($urls as $url) : ?>
-                    <li><span><?= $url['short_url'] ?></span> <a href="<?= $url['full_url'] ?>">Перейти</a></li>
-                <?php endforeach; ?>
+        <div class="lists">
+            <ul class="list">
+
             </ul>
         </div>
     </div>

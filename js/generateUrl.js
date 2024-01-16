@@ -1,3 +1,4 @@
+getUrls();
 function generateUrl() {
 
     let data = {
@@ -29,11 +30,22 @@ function generateUrl() {
                     response = JSON.parse(xhr.responseText);
                 message.innerText = response.url;
             }
-            getData();
         } catch (err) {
             console.log(err);
         }
     };
 
     xhr.send('url=' + encodeURIComponent(url));
+}
+
+async function getUrls() {
+    let response = await fetch('app/Http/Handlers/All_data.php', { method: 'GET' });
+    let content = await response.json();
+    console.log(content);
+
+    let ul = document.querySelector('.list');
+
+    for (let key in content) {
+        ul.innerHTML += `<li><span>${content[key].short_url}</span> <a href="${content[key].full_url}" target="_blank">Перейти</a></li> `
+    }
 }
