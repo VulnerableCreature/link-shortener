@@ -1,8 +1,13 @@
 function generateUrl() {
-    const url = document.getElementById('uniqueUrl').value;
-    const message = document.getElementById('urlResult');
-    let btnCopy = document.getElementById('btn_copy');
 
+    let data = {
+        url: document.getElementById('uniqueUrl').value,
+        message: document.getElementById('urlResult'),
+    };
+
+    const { url, message } = data;
+
+    let btnCopy = document.getElementById('btn_copy');
 
     if (url == '') {
         console.log(" Input is Empty");
@@ -14,9 +19,9 @@ function generateUrl() {
     btnCopy.classList.remove("hide");
 
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'app/Http/Handlers/Ajax_handler.php', true);
+    xhr.open('POST', 'app/Http/Handlers/Ajax_handler.php', false);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = function () {
         try {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 console.log(xhr.responseText);
@@ -24,9 +29,11 @@ function generateUrl() {
                     response = JSON.parse(xhr.responseText);
                 message.innerText = response.url;
             }
+            getData();
         } catch (err) {
             console.log(err);
         }
     };
+
     xhr.send('url=' + encodeURIComponent(url));
 }
