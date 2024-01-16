@@ -89,7 +89,17 @@ use App\Http\Service\LinkShortener;
         }
         console.log(url);
 
-        message.innerText = 'Ваш короткий адрес: ' + url;
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'app/Http/Handlers/Ajax_handler.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+                document.getElementById('shortUrlResult').innerText = 'Short URL: ' + response.url;
+            }
+        };
+
+        xhr.send('url=' + encodeURIComponent(url));
     }
     </script>
 </body>

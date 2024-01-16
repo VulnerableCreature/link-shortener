@@ -86,3 +86,40 @@ echo $random;
 Получаю вот такой результат:
 
 > `fkwfjkweAH2UDi`
+
+> 2. Ajax-запрос
+
+Информацию об этом читал отсюда [Link](https://learn.javascript.ru/xmlhttprequest)
+
+Изменил функцию `generateUrl()` добавив в неё Ajax-запрос.
+
+```bash
+const xhr = new XMLHttpRequest();
+xhr.open('POST', 'app/Http/Handlers/Ajax_handler.php', true);
+xhr.setRequestHeader('Content-Type', 'application/json');
+xhr.onreadystatechange = function() {
+if (xhr.readyState === 4 && xhr.status === 200) {
+    const response = JSON.parse(xhr.responseText);
+    document.getElementById('shortUrlResult').innerText = 'Short URL: ' + response.url;
+}
+};
+xhr.send('url=' + encodeURIComponent(url));
+```
+
+Создал объект для возможности отправлять HTTP запросы;
+Отправляю запрос 'POST' на обработчик запросов `Ajax_handler.php` в нем указываю моковую реализацию для возврата ответа.
+
+```bash
+<?php
+/* Здесь будем обрабатывать ajax-запросы приходящие с фронта */
+
+echo json_encode(['url' => 'Answer']);
+```
+
+Добавляю HTTP-заголовки, указываю что это данные будут в формате `json`
+
+Отправляю данные на сервер в закодированном виде используя функцию `encodeURIComponent(url)` - url ссылка которую мы передаём
+
+Про данную функцию прочитал тут: [Link](https://www.geeksforgeeks.org/how-to-encode-and-decode-a-url-in-javascript/)
+
+Далее проверяю состояние запроса: если состояние === 4(запрос завершен) и сетевой статус === 200 получаю данные с сервера и вывожу на страницу новую сгенированную ссылку.
