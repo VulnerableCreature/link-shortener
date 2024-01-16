@@ -14,13 +14,26 @@ class LinkShortener
 	}
 
 	/**
+	 * Генерирует уникальный короткий URL.
+	 *
+	 * @return string Сгенерированный короткий URL.
+	 */
+	public function generateUrl(): string
+	{
+		$shortUrl = $this->generateRandomString();
+		$shortUrl = $this->originalUrl . $shortUrl;
+
+		return $shortUrl;
+	}
+
+	/**
 	 * Функция генерирует случайную строку длиной 6 символов строчных и верхних букв, цифр.
 	 * 
 	 * 	@param int $length [Необзательный параметр]
 	 *
 	 * Возвращает: случайную строку длиныой 6 символов.
 	 */
-	public function generateRandomString(int $length = 6): string
+	private function generateRandomString(int $length = 6): string
 	{
 		$characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 		$randomString = '';

@@ -34,3 +34,55 @@
 > [Алгоритм](https://stackoverflow.com/questions/742013/how-do-i-create-a-url-shortener)
 
 > [Object URL JavaScript](https://learn.javascript.ru/url)
+
+# Реализация
+
+> 1. Начал описывать класс LinkShortener
+
+Написал функцию для генерации случайной строки. Решил простестировать вызвав её в index.php и получил ошибку.
+
+```bash
+127.0.0.1:54029 [200]: GET / - Uncaught Error: Class "App\Http\Service\LinkShortener" not found in C:\!Projects\link-shortener\index.php:67
+Stack trace:
+#0 {main}
+  thrown in C:\!Projects\link-shortener\index.php on line 67
+```
+
+- Ошибка связана с тем, что он не видит этот файл
+
+> Решение:
+
+Можно использовать переменную `__DIR__` или `composer`
+
+> Выбрал composer. Описал файл `composer.json` и выполнил команду `composer install`
+
+> В файл index.php подключил файл автозагрузчика `require_once('vendor/autoload.php');`
+
+И следующим шагом указал, что будем использовать namespace: `use App\Http\Service\LinkShortener;`
+
+> Генерация коротких ссылок
+
+Создал функцию `genarteUrl(): string` в ней буду обрабатывать входящую ссылку и возвращать новую сгенирированную короткую ссылку.
+
+```bash
+public function generateUrl(): string
+{
+	$shortUrl = $this->generateRandomString();
+	$shortUrl = $this->originalUrl . $shortUrl;
+
+	return $shortUrl;
+}
+```
+
+Проверяю работу.
+В `index.php`
+
+```bash
+$shortener = new LinkShortener('fkwfjkwe');
+$random = $shortener->generateUrl();
+echo $random;
+```
+
+Получаю вот такой результат:
+
+> `fkwfjkweAH2UDi`

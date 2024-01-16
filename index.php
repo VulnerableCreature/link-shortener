@@ -67,7 +67,7 @@ use App\Http\Service\LinkShortener;
 <body>
     <?php
 	$shortener = new LinkShortener('fkwfjkwe');
-	$random = $shortener->generateRandomString();
+	$random = $shortener->generateUrl();
 	echo $random;
 	?>
     <div class="form-request">
